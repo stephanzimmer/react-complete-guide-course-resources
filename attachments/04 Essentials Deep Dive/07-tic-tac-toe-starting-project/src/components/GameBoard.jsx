@@ -1,6 +1,4 @@
-export default function GameBoard({gameBoard, onSelectSquare}) {
-    
-
+export default function GameBoard({onSelectSquare, gameBoard}) {    
     return (
     <ol id="game-board">
         {gameBoard.map((row, rowIndex) => 
@@ -9,7 +7,7 @@ export default function GameBoard({gameBoard, onSelectSquare}) {
                 {row.map((cell, cellIndex) => 
                 <li key={rowIndex*10+cellIndex}>
                     
-                    <button onClick={() => onSelectSquare(rowIndex, cellIndex)}>{gameBoard[rowIndex][cellIndex]}</button>
+                    <button disabled={cell != null} onClick={() => onSelectSquare(rowIndex, cellIndex)}>{gameBoard[rowIndex][cellIndex]}</button>
                 </li>)}
             </ol>    
         </li>)}
