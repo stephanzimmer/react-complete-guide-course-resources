@@ -1,32 +1,55 @@
-import { useRef } from 'react'
+//import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import classes from './Counter.module.css';
-import store from '../store/index'
 
-const Counter = () => {
-  const inputRef = useRef()
+const Counter = ({counter, increment, decrement}) => {
+  //const counter = useSelector(state => state.counter)
+  //const dispatch = useDispatch()
 
-  const handleStoreChange = () => {
-    const { counter } = store.getState()
-    console.log('handleStoreChange: ' + counter)
-    inputRef.current.innerHTML = counter
-  }
+  // const increment = () => {
+  //   dispatch({
+  //     type: 'increment'
+  //   })    
+  // };
+  
+  // const decrement = () => {
+  //   dispatch({
+  //     type: 'decrement'
+  //   })
+  // };
 
-
-  const toggleCounterHandler = () => {
-    store.dispatch({
-      type: 'increment'
-    })
-  };
-
-  store.subscribe(handleStoreChange)
+  //not needed when using useSelector
+  //store.subscribe(handleStoreChange)
 
   return (
     <main className={classes.counter}>
       <h1>Redux Counter</h1>
-      <div ref={inputRef} className={classes.value}>-- COUNTER VALUE --</div>
-      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+      <div className={classes.value}>{counter} Counter</div>
+      <button onClick={() => increment(1)}>Increment</button>
+      <button onClick={() => increment(5)}>Increment by 5</button>
+      <button onClick={() => decrement(1)}>Decrement</button>
     </main>
   );
 };
 
-export default Counter;
+const mapReduxStateToProps = state => {
+  return {
+    counter: state.counter
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    increment: (val) => dispatch({
+        type: 'increment',
+        payload: val
+      }),
+    decrement: (val) => {      
+      dispatch({
+      type: 'decrement',
+      payload: val
+    })}
+  }
+}
+//connect is used instead of the useSelector hook
+export default connect(mapReduxStateToProps, mapDispatchToProps)(Counter);
